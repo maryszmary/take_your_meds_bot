@@ -102,10 +102,10 @@ def adding_reminder(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id, text=TIME_QUESTION)
 
 
-    DISPATCHER.add_handler(CommandHandler("start", start))
-    DISPATCHER.add_handler(CommandHandler("help", start))
-    DISPATCHER.add_handler(CommandHandler("add_reminder", adding_reminder))
-    DISPATCHER.add_handler(MessageHandler(Filters.text, handle_message))
+DISPATCHER.add_handler(CommandHandler("start", start))
+DISPATCHER.add_handler(CommandHandler("help", start))
+DISPATCHER.add_handler(CommandHandler("add_reminder", adding_reminder))
+DISPATCHER.add_handler(MessageHandler(Filters.text, handle_message))
 
 def main() -> None:
     """Run bot."""
