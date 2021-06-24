@@ -128,7 +128,7 @@ def run_webhook():
         listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
-        webhook_url= BASE_URL + ':' + str(PORT) + '/' + TOKEN)
+        webhook_url= BASE_URL + TOKEN)
     UPDATER.idle()
 
 if __name__ == '__main__':
