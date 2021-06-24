@@ -121,9 +121,8 @@ def main() -> None:
 def run_webhook():
     UPDATER.start_webhook(listen="0.0.0.0",
                         port=PORT,
-                        url_path=TOKEN,
-                        os.environ.get('MY_URL') + '/' + TOKEN)
-    UPDATER.bot.set_webhook()
+                        url_path=TOKEN)
+    UPDATER.bot.set_webhook(os.environ.get('MY_URL') + '/' + TOKEN)
     UPDATER.idle()
 
 if __name__ == '__main__':
