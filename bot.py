@@ -16,6 +16,7 @@ JOBS = UPDATER.job_queue
 BASE_URL = os.environ.get('MY_URL', 'localhost')
 print(TOKEN)
 print(PORT)
+print(BASE_URL)
 
 
 
@@ -124,10 +125,10 @@ def main() -> None:
 
 def run_webhook():
     UPDATER.start_webhook(
-        listen="0.0.0.0",
+        listen="localhost",
         port=PORT,
         url_path=TOKEN,
-        webhook_url= BASE_URL + '//' + TOKEN)
+        webhook_url= BASE_URL + '/' + TOKEN)
     UPDATER.idle()
 
 if __name__ == '__main__':
