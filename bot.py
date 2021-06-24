@@ -1,10 +1,13 @@
 import re
+import os
 from datetime import time
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 from telegram.ext import MessageHandler, Filters
-from config import TOKEN
+# from config import TOKEN
 
+
+TOKEN = os.environ.get('TELEGRAM_TOKEN')
 UPDATER = Updater(TOKEN)
 # Get the dispatcher to register handlers
 DISPATCHER = UPDATER.dispatcher
