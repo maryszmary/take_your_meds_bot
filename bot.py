@@ -13,6 +13,10 @@ UPDATER = Updater(TOKEN)
 # Get the dispatcher to register handlers
 DISPATCHER = UPDATER.dispatcher
 JOBS = UPDATER.job_queue
+BASE_URL = os.environ.get('MY_URL', 'localhost')
+print(TOKEN)
+print(PORT)
+
 
 
 WELCOME_MSG = """
@@ -123,7 +127,7 @@ def run_webhook():
         listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
-        webhook_url=os.environ.get('MY_URL', 'localhost') + '/' + TOKEN)
+        webhook_url= BASE_URL + '//' + TOKEN)
     UPDATER.idle()
 
 if __name__ == '__main__':
