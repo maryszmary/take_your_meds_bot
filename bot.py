@@ -8,12 +8,12 @@ from telegram.ext import MessageHandler, Filters
 
 
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
-PORT = os.environ.get('PORT', 8443)
+PORT = int(os.environ.get('PORT', 8443))
+BASE_URL = os.environ.get('MY_URL', 'localhost')
 UPDATER = Updater(TOKEN)
 # Get the dispatcher to register handlers
 DISPATCHER = UPDATER.dispatcher
 JOBS = UPDATER.job_queue
-BASE_URL = os.environ.get('MY_URL', 'localhost')
 print(TOKEN)
 print(PORT)
 print(BASE_URL)
@@ -125,10 +125,10 @@ def main() -> None:
 
 def run_webhook():
     UPDATER.start_webhook(
-        listen="localhost",
+        listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
-        webhook_url= BASE_URL + '/' + TOKEN)
+        webhook_url= BASE_URL + ':' + str(PORT) + '/' + TOKEN)
     UPDATER.idle()
 
 if __name__ == '__main__':
