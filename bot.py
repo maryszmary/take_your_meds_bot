@@ -8,6 +8,7 @@ from telegram.ext import MessageHandler, Filters
 
 
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
+PORT = os.environ.get('PORT')
 UPDATER = Updater(TOKEN)
 # Get the dispatcher to register handlers
 DISPATCHER = UPDATER.dispatcher
