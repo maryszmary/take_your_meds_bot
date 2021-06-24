@@ -63,7 +63,7 @@ def process_time_choice(message, context):
             )
         hour -= 3
         if hour < 0:
-            hour = 24 - hour
+            hour = 24 + hour
         point = time(hour, minutes)
         job_name = str(message.from_user.id) + '_' + str(hour) + ':' + str(minutes)
 
