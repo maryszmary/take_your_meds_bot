@@ -101,14 +101,13 @@ def adding_reminder(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id, text=TIME_QUESTION)
 
 
-def main() -> None:
-    """Run bot."""
-    # on different commands - answer in Telegram
     DISPATCHER.add_handler(CommandHandler("start", start))
     DISPATCHER.add_handler(CommandHandler("help", start))
     DISPATCHER.add_handler(CommandHandler("add_reminder", adding_reminder))
     DISPATCHER.add_handler(MessageHandler(Filters.text, handle_message))
 
+def main() -> None:
+    """Run bot."""
     # Start the Bot
     UPDATER.start_polling()
 
@@ -116,6 +115,14 @@ def main() -> None:
     # SIGABRT. This should be used most of the time, since start_polling() is
     # non-blocking and will stop the bot gracefully.
     UPDATER.idle()
+
+
+def run_webhook():
+    updater.start_webhook(listen="0.0.0.0",
+                        port=8443,
+                        url_path=TOKEN)
+    updater.bot.set_webhook(os.environ.get('MY_URL') + '/' + TOKEN)
+    updater.idle()
 
 if __name__ == '__main__':
     main()
