@@ -7,6 +7,11 @@ from telegram.ext import MessageHandler, Filters
 # from config import TOKEN
 
 
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
 PORT = int(os.environ.get('PORT', 8443))
 BASE_URL = os.environ.get('MY_URL', 'localhost')
@@ -14,9 +19,6 @@ UPDATER = Updater(TOKEN)
 # Get the dispatcher to register handlers
 DISPATCHER = UPDATER.dispatcher
 JOBS = UPDATER.job_queue
-print(TOKEN)
-print(PORT)
-print(BASE_URL)
 
 
 
@@ -91,14 +93,44 @@ def process_chitchat(message):
         message.reply_text(RESPONSES['fallback'])
 
 
+def choose_interval(update: Update, context: CallbackContext) -> None:
+    """Sends a message with three inline buttons attached."""
+    keyboard = [
+        InlineKeyboardButton("5 минут", callback_data='5'),
+        InlineKeyboardButton("15 минут", callback_data='15'),
+        InlineKeyboardButton("30 минут", callback_data='30'),
+        InlineKeyboardButton("45 минут", callback_data='45'),
+        InlineKeyboardButton("60 минут", callback_data='60'),
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Выбери частоту повторений', reply_markup=reply_markup)
+
+
+def button(update: Update, context: CallbackContext) -> None:
+    """Parses the CallbackQuery and updates the message text."""
+
+    query = update.callback_query
+
+    # CallbackQueries need to be answered, even if no notification to the user is needed
+    # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
+    query.answer()
+    query.edit_message_text(text=f"Selected option: {query.data}")
+    USERS_STATE[update.message.from_user.id] = 'blank'
+
+
 def handle_message(update: Update, context: CallbackContext) -> None:
+    if update.message.text == "отмена":
+        USERS_STATE[update.message.from_user.id] = 'blank'
+        context.bot.send_message(chat_id=message.from_user.id, text="ок")
+
     if update.message.from_user.id in USERS_STATE:
         if USERS_STATE[update.message.from_user.id] == 'choosing_time':
             process_time_choice(update.message, context)
         elif USERS_STATE[update.message.from_user.id] == 'choosing_interval':
-            pass
+            choose_interval(update, context)
         else:
             process_chitchat(update.message)
+
     else:
         USERS_STATE[update.message.from_user.id] = 'blank'
         process_chitchat(update.message)
@@ -112,6 +144,7 @@ def adding_reminder(update: Update, context: CallbackContext):
 DISPATCHER.add_handler(CommandHandler("start", start))
 DISPATCHER.add_handler(CommandHandler("help", start))
 DISPATCHER.add_handler(CommandHandler("add_reminder", adding_reminder))
+DISPATCHER.add_handler(CallbackQueryHandler(button))
 DISPATCHER.add_handler(MessageHandler(Filters.text, handle_message))
 
 def main() -> None:
