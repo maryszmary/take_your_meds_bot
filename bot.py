@@ -105,7 +105,7 @@ def choose_interval(message, context: CallbackContext) -> None:
         InlineKeyboardButton("60 минут", callback_data='60'),
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message.reply_text('Выбери частоту повторений', reply_markup=reply_markup)
+    context.bot.send_message('Выбери частоту повторений', chat_id=message.from_user.id, reply_markup=reply_markup)
 
 
 def button(update: Update, context: CallbackContext) -> None:
