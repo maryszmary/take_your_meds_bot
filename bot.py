@@ -98,11 +98,11 @@ def process_chitchat(message):
 def choose_interval(message, context: CallbackContext) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
-        InlineKeyboardButton("5 минут", callback_data='5'),
-        InlineKeyboardButton("15 минут", callback_data='15'),
-        InlineKeyboardButton("30 минут", callback_data='30'),
-        InlineKeyboardButton("45 минут", callback_data='45'),
-        InlineKeyboardButton("60 минут", callback_data='60'),
+        [InlineKeyboardButton("5 минут", callback_data='5')],
+        [InlineKeyboardButton("15 минут", callback_data='15')],
+        [InlineKeyboardButton("30 минут", callback_data='30')],
+        [InlineKeyboardButton("45 минут", callback_data='45')],
+        [InlineKeyboardButton("60 минут", callback_data='60')],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     context.bot.send_message(chat_id=message.from_user.id, text='Выбери частоту повторений', reply_markup=reply_markup)
