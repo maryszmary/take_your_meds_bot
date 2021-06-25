@@ -78,6 +78,7 @@ def process_time_choice(message, context):
 
         JOBS.run_daily(remind, point, days=(0, 1, 2, 3, 4, 5, 6),  name=job_name)
         USERS_STATE[message.from_user.id] = 'choosing_interval'
+        choose_interval(message, context)
     else:
         context.bot.send_message(chat_id=message.from_user.id, text=WRONG_FORMAT)
 
@@ -94,7 +95,7 @@ def process_chitchat(message):
         message.reply_text(RESPONSES['fallback'])
 
 
-def choose_interval(update: Update, context: CallbackContext) -> None:
+def choose_interval(message, context: CallbackContext) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
         InlineKeyboardButton("5 минут", callback_data='5'),
@@ -104,7 +105,7 @@ def choose_interval(update: Update, context: CallbackContext) -> None:
         InlineKeyboardButton("60 минут", callback_data='60'),
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Выбери частоту повторений', reply_markup=reply_markup)
+    message.reply_text('Выбери частоту повторений', reply_markup=reply_markup)
 
 
 def button(update: Update, context: CallbackContext) -> None:
